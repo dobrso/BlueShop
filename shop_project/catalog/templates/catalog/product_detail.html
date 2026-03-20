@@ -1,0 +1,32 @@
+​​{% extends 'base.html' %}
+{% block content %}
+    <h2>{{ product.title }}</h2>
+    <p>{{ product.description }}</p>
+    <p style="color: #ff1493; font-weight: bold; font-size: 20px;">Цена: {{ product.price }} ₽</p>
+
+    <hr>
+    <h3>Оставить отзыв 💖</h3>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+        
+        <button type="submit" style="background: #ff1493; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
+            Отправить отзыв
+        </button>
+    </form>
+
+    <hr>
+
+    <hr>
+    <h3>Отзывы:</h3>
+    {% for review in reviews %}
+        <div style="border-left: 3px solid #ffb6c1; padding-left: 10px; margin-bottom: 10px;">
+            <p><strong>{{ review.user.username }}</strong> (Оценка: {{ review.rating }}/5)</p>
+            <p>{{ review.text }}</p>
+        </div>
+    {% empty %}
+        <p style="color: #888;">Отзывов пока нет. Будьте первыми!</p>
+    {% endfor %}
+{% endblock %}

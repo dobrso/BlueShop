@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="profile-box" style="border: 2px solid #ffb6c1; padding: 20px; border-radius: 15px;">
+        <h2 style="color: #ff1493;">💖 Личный кабинет</h2>
+        <p><strong>Пользователь:</strong> {{ profile.user.username }}</p>
+        <p><strong>Телефон:</strong> {{ profile.phone }}</p>
+        <p><strong>Статус:</strong> Постоянный покупатель ✨</p>
+    </div>
+{% endblock %}
