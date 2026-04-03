@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, Category
-from reviews.models import Review
 from django.contrib.auth.models import User
-from reviews.forms import ReviewForm
 
+from reviews.models import Review
+from reviews.forms import ReviewForm
+from .models import Product, Category
 
 def home_page(request):
     return render(request, 'catalog/home.html')
@@ -27,7 +27,7 @@ def product_detail(request, product_id):
         if form.is_valid():
             new_review = form.save(commit=False)
             new_review.product = product
-            new_review.user = User.objects.first()
+            new_review.user = request.user
             new_review.save()
 
             return redirect('catalog:product_detail', product_id=product.id)

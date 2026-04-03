@@ -1,21 +1,27 @@
-​​{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% block content %}
     <h2>{{ product.title }}</h2>
     <p>{{ product.description }}</p>
     <p style="color: #ff1493; font-weight: bold; font-size: 20px;">Цена: {{ product.price }} ₽</p>
 
     <hr>
-    <h3>Оставить отзыв 💖</h3>
-    
-    <form method="post">
-        {% csrf_token %}
-        
-        {{ form.as_p }}
-        
-        <button type="submit" style="background: #ff1493; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
-            Отправить отзыв
-        </button>
-    </form>
+    {% if request.user.is_authenticated %}
+        <h3>Оставить отзыв 💖</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" style="background: #ff1493; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                Отправить отзыв
+            </button>
+        </form>
+    {% else %}
+        <div style="background: #fff0f5; padding: 15px; border-radius: 5px; border: 1px solid #ffb6c1;">
+            <p>Только зарегистрированные пользователи могут оставлять отзывы.</p>
+            <a href="{% url 'users:login' %}" style="color: #ff1493; font-weight: bold;">Войти</a> или
+            <a href="{% url 'users:register' %}" style="color: #ff1493; font-weight: bold;">Зарегистрироваться</a>
+        </div>
+    {% endif %}
+
 
     <hr>
 
