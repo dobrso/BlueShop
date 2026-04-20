@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 
 from reviews.models import Review
 from reviews.forms import ReviewForm
@@ -17,26 +18,70 @@ def product_list(request):
     }
     return render(request, 'catalog/product_list.html', context)
 
-
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     reviews = Review.objects.filter(product=product)
 
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            new_review = form.save(commit=False)
-            new_review.product = product
-            new_review.user = request.user
-            new_review.save()
+    form = ReviewForm()
 
-            return redirect('catalog:product_detail', product_id=product.id)
+    context = {
+        'product': product,
+        'reviews': reviews,
+        'form': form
+    }
 
-    else:
-        form = ReviewForm()
-        context = {
+    return render(request, 'catalog/product_detail.html', context)
+
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    cart = request.session.get('cart', {})
+
+    pid = str(product.id)
+    cart[pid] = cart.get(pid, 0) + 1
+
+    request.session['cart'] = cart
+    request.session.modified = True
+
+    return redirect('catalog:product_detail', product_id)
+
+def cart_view(request):
+    cart = request.session.get('cart', {})
+    products_ids = cart.keys()
+
+    products = Product.objects.filter(id__in=products_ids)
+
+    items = []
+
+    total_price = 0
+
+    for product in products:
+        qty = cart[str(product.id)]
+        line_total = product.price * qty
+        total_price += line_total
+
+        items.append({
             'product': product,
-            'reviews': reviews,
-            'form': form
-        }
-        return render(request, 'catalog/product_detail.html', context)
+            'qty': qty,
+            'line_total': line_total
+        })
+
+    context = {
+        'items': items,
+        'total_price': total_price
+    }
+
+    return render(request, 'catalog/cart.html', context)
+
+def clear_cart(request):
+    if 'cart' in request.session:
+        del request.session['cart']
+        request.session.modified = True
+
+    return redirect('catalog:cart_view')
+
+def toggle_theme(request):
+    current_theme = request.COOKIES.get('theme', 'light')
+    new_theme = 'dark' if current_theme == 'light' else 'light'
+    response = HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    response.set_cookie('theme', new_theme, max_age=60 * 60 * 24 * 30, samesite='Lax')
+    return response

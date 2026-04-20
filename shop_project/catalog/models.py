@@ -18,6 +18,7 @@ class Product(models.Model):
     price = models.DecimalField('Цена', max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField('Количество', default=0)
     is_available = models.BooleanField('В стоке?', default=True)
+    image_path = models.CharField("Путь к картинке", max_length=255, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Продукт'

@@ -32,6 +32,7 @@ DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = []
 
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 # Application definition
 
@@ -135,3 +136,13 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = '/users/profile/'
 LOGIN_URL = '/users/login/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.mail.ru')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 465))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'True') == 'True'
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
