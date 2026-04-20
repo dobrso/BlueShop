@@ -2,6 +2,7 @@ from django.urls import path, reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views as auth_views
 
+from . import api_views
 from .views import register, profile_view
 
 app_name = 'users'
@@ -42,4 +43,5 @@ urlpatterns = [
         ),
         name='password_reset_complete',
     ),
+    path('api/me/', api_views.MyProfileAPIView.as_view(), name='api_my_profile'),
 ]
