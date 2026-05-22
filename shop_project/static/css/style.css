@@ -7,12 +7,12 @@ body {
 
 /* Светлая тема (по умолчанию — твой текущий дизайн) */
 body.light-theme {
-    background-color: #ffebf2;
+    background-color: #ADD8E6;
     color: #333;
 }
 
 body.light-theme .site-header {
-    background-color: #ffb6c1;
+    background-color: #87CEEB;
 }
 
 body.light-theme .container {
@@ -34,7 +34,7 @@ body.dark-theme .container {
 }
 
 body.dark-theme a.nav-link {
-    color: #ffb6c1;
+    color: #87CEFA;  /* светло-голубой вместо розового */
 }
 
 /* Остальные стили — общие */
@@ -67,7 +67,7 @@ body.dark-theme a.nav-link {
 }
 
 .product-card {
-    border: 1px solid #ffb6c1;
+    border: 1px solid #87CEEB;  /* голубая рамка вместо розовой */
     border-radius: 8px;
     padding: 15px;
     width: 250px;
@@ -76,7 +76,7 @@ body.dark-theme a.nav-link {
 }
 
 .price {
-    color: #ff1493;
+    color: #1E90FF;  /* яркий голубой вместо розового */
     font-weight: bold;
     font-size: 20px;
 }

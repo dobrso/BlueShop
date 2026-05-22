@@ -8,7 +8,7 @@
     </head>
     <body class="{% if request.COOKIES.theme == 'dark' %}dark-theme{% else %}light-theme{% endif %}">
         <header class="site-header">
-            <h1>🛍️ BlueStore 💅</h1>
+            <h1>BlueStore</h1>
             <nav>
                 <a href="{% url 'catalog:home' %}" class="nav-link">Главная</a>
                 <a href="{% url 'catalog:product_list' %}" class="nav-link">Каталог</a>
@@ -16,13 +16,13 @@
 
                 {% if request.user.is_authenticated %}
                     <span style="margin-left: 20px;">
-                        Привет, <strong>{{ request.user.username }}</strong>! 🌸
+                        Привет, <strong>{{ request.user.username }}</strong>!
                     </span>
                     <a href="{% url 'users:profile' %}" class="nav-link">Личный кабинет</a>
 
                     <form action="{% url 'users:logout' %}" method="post" style="display: inline; margin-left: 10px;">
                         {% csrf_token %}
-                        <button type="submit" style="background: none; border: 1px solid #ff1493; color: #ff1493; padding: 5px 10px; cursor: pointer; border-radius: 5px;">
+                        <button type="submit" style="background: none; border: 1px solid black; color: black; padding: 5px 10px; cursor: pointer; border-radius: 5px;">
                             Выйти
                         </button>
                     </form>

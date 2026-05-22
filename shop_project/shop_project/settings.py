@@ -32,13 +32,21 @@ DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = []
 
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
-
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
+    'django.contrib.sites',
     'drf_spectacular',
     'rest_framework',
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
     'reviews.apps.ReviewsConfig',
     'orders.apps.OrdersConfig',
     'users.apps.UsersConfig',
@@ -59,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'shop_project.urls'
@@ -78,6 +87,7 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'shop_project.asgi.application'
 WSGI_APPLICATION = 'shop_project.wsgi.application'
 
 
@@ -95,6 +105,28 @@ DATABASES = {
     }
 }
 
+CACHE = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': os.getenv('REDIS_LOCATION'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': os.getenv('REDIS_PASSWORD'),
+        }
+    }
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -150,6 +182,13 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
@@ -159,3 +198,12 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_LOGIN_ON_GET = True

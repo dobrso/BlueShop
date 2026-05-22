@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 from reviews.models import Review
 from reviews.forms import ReviewForm
@@ -85,3 +86,7 @@ def toggle_theme(request):
     response = HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     response.set_cookie('theme', new_theme, max_age=60 * 60 * 24 * 30, samesite='Lax')
     return response
+
+@login_required
+def chat_room(request):
+    return render(request, 'catalog/chat.html')
