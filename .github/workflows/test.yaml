@@ -45,6 +45,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Миграции
+        run: |
+          python manage.py migrate
+        env:
+          DJANGO_SETTINGS_MODULE: shop_project.settings
+          DB_HOST: localhost
+          DB_NAME: bluestore_test
+          DB_USER: admin
+          DB_PASSWORD: admin_password
+          REDIS_HOST: localhost
+
       - name: Запускаем pytest
         env:
           DJANGO_SETTINGS_MODULE: shop_project.settings
