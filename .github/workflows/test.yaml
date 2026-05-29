@@ -47,7 +47,7 @@ jobs:
 
       - name: Запускаем pytest
         env:
-          DJANGO_SETTINGS_MODULE: shop_project.shop_project.settings
+          DJANGO_SETTINGS_MODULE: shop_project.settings
           DB_HOST: localhost
           DB_NAME: bluestore_test
           DB_USER: admin
