@@ -16,6 +16,9 @@ class ProductShortSerializer(serializers.ModelSerializer):
         fields = ['id', 'title']
 
 class ReviewSerializer(serializers.ModelSerializer):
+    user = UserShortSerializer(read_only=True)
+    product = ProductShortSerializer(read_only=True)
+
     class Meta:
         model = Review
         fields = ['id', 'text', 'rating', 'user', 'product']
