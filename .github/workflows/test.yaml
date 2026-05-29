@@ -48,11 +48,11 @@ jobs:
       - name: Запускаем pytest
         env:
           DJANGO_SETTINGS_MODULE: shop_project.settings
+          PYTHONPATH: .
           DB_HOST: localhost
           DB_NAME: bluestore_test
           DB_USER: admin
           DB_PASSWORD: admin_password
           REDIS_HOST: localhost
         run: |
-          export PYTHONPATH=.
           pytest
