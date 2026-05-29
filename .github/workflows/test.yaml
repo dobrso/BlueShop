@@ -47,6 +47,7 @@ jobs:
 
       - name: Миграции
         run: |
+          python manage.py makemigrations
           python manage.py migrate
         env:
           DJANGO_SETTINGS_MODULE: shop_project.settings
