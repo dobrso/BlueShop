@@ -49,6 +49,7 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: shop_project.settings
           PYTHONPATH: shop_project
+          SECRET_KEY: secret
           DB_HOST: localhost
           DB_NAME: bluestore_test
           DB_USER: admin
